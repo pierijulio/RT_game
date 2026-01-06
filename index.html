@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RT Sales Game - Guerra de Espaços</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e74c3c;
+            --gold: #f1c40f;
+            --bg: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        #game-container {
+            background: var(--primary);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            border: 4px solid #bdc3c7;
+        }
+
+        h1 { color: var(--gold); text-transform: uppercase; }
+        
+        input {
+            padding: 10px;
+            width: 80%;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Courier New';
+            text-transform: uppercase;
+        }
+
+        button:hover { background: #c0392b; }
+
+        .hidden { display: none; }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            background: #34495e;
+            text-align: left;
+            padding: 15px;
+            border: 1px solid #7f8c8d;
+        }
+
+        .option-btn:hover { background: #4b6584; }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #7f8c8d;
+        }
+
+        .arcade-font { color: var(--gold); }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="start-screen">
+        <h1>RT ARCADE: GUERRA DE ESPAÇOS</h1>
+        <p>INSIRA SEU NOME PARA COMBATER A RUPTURA:</p>
+        <input type="text" id="player-name" placeholder="NOME DO VENDEDOR">
+        <br>
+        <button onclick="startGame()">INICIAR MISSÃO</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div id="question-count" style="font-size: 0.8em; color: var(--gold);"></div>
+        <h2 id="question-text">Pergunta aqui?</h2>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="ranking-screen" class="hidden">
+        <h1 class="arcade-font">HALL DA FAMA RT</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>NOME</th>
+                    <th>DATA</th>
+                    <th>PTS</th>
+                </tr>
+            </thead>
+            <tbody id="ranking-body"></tbody>
+        </table>
+        <br>
+        <button onclick="location.reload()">JOGAR NOVAMENTE</button>
+    </div>
+</div>
+
+<script>
+    let playerName = "";
+    let score = 0;
+    let currentQuestion = 0;
+
+    const questions = [
+        {
+            q: "Cliente precisa de controle total de validade e reposição diária pesada. Qual oferecer?",
+            options: [
+                { text: "Serviço Exclusivo", points: 10 },
+                { text: "Serviço Compartilhado", points: 0 }
+            ]
+        },
+        {
+            q: "O cliente diz: 'O serviço compartilhado não vai dar atenção ao meu produto'. Como rebater?",
+            options: [
+                { text: "Concordar e tentar vender o exclusivo logo de cara.", points: 0 },
+                { text: "Explicar sobre o roteiro fixo e o monitoramento via app.", points: 10 }
+            ]
+        },
+        {
+            q: "Qual a principal vantagem financeira do serviço Compartilhado?",
+            options: [
+                { text: "Diluição de custos entre vários fabricantes.", points: 10 },
+                { text: "Eliminar 100% da concorrência na gôndola.", points: 0 }
+            ]
+        },
+        {
+            q: "Um cliente de 'Luxo' com mix complexo quer garantia de 0% de ruptura. Foco em:",
+            options: [
+                { text: "Merchandising Exclusivo.", points: 10 },
+                { text: "Promotor compartilhado apenas 1x por semana.", points: 0 }
+            ]
+        }
+    ];
+
+    function startGame() {
+        playerName = document.getElementById('player-name').value;
+        if (playerName.trim() === "") {
+            alert("Por favor, digite seu nome!");
+            return;
+        }
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        if (currentQuestion < questions.length) {
+            const q = questions[currentQuestion];
+            document.getElementById('question-count').innerText = `QUESTÃO ${currentQuestion + 1} DE ${questions.length}`;
+            document.getElementById('question-text').innerText = q.q;
+            const optionsDiv = document.getElementById('options-container');
+            optionsDiv.innerHTML = "";
+            
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt.text;
+                btn.onclick = () => {
+                    score += opt.points;
+                    currentQuestion++;
+                    showQuestion();
+                };
+                optionsDiv.appendChild(btn);
+            });
+        } else {
+            endGame();
+        }
+    }
+
+    function endGame() {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('ranking-screen').classList.remove('hidden');
+        
+        const date = new Date().toLocaleDateString('pt-BR');
+        const newEntry = { name: playerName, date: date, score: score };
+        
+        // Salvar e carregar do LocalStorage (Persistência no navegador)
+        let ranking = JSON.parse(localStorage.getItem('rtRanking')) || [];
+        ranking.push(newEntry);
+        ranking.sort((a, b) => b.score - a.score); // Ordenar por maior pontuação
+        localStorage.setItem('rtRanking', JSON.stringify(ranking));
+
+        const tbody = document.getElementById('ranking-body');
+        tbody.innerHTML = "";
+        ranking.slice(0, 5).forEach(entry => {
+            tbody.innerHTML += `<tr><td>${entry.name}</td><td>${entry.date}</td><td class="arcade-font">${entry.score}</td></tr>`;
+        });
+    }
+</script>
+
+</body>
+</html>
