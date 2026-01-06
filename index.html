@@ -135,18 +135,54 @@
 
     // BANCO DE DADOS COM 50 QUESTÕES
     const allQuestions = [
-        { q: "O serviço compartilhado é indicado para qual tipo de empresa?", options: [{text: "Pequenos/Médios que buscam capilaridade.", points: 10}, {text: "Empresas que exigem 100% do tempo do promotor.", points: 0}] },
-        { q: "Qual a principal característica do Merchandising Exclusivo?", options: [{text: "Foco total na marca e execução impecável.", points: 10}, {text: "Rateio de custos com concorrentes.", points: 0}] },
-        { q: "O que significa 'Ruptura' no PDV?", options: [{text: "Falta do produto na prateleira.", points: 10}, {text: "Produto com embalagem violada.", points: 0}] },
-        { q: "Como o promotor RT prova que visitou a loja?", options: [{text: "Via GPS e check-in no aplicativo de gestão.", points: 10}, {text: "Assinando um livro físico na recepção.", points: 0}] },
-        { q: "No compartilhado, o promotor pode repor quantas marcas?", options: [{text: "Várias marcas que não sejam necessariamente concorrentes diretas.", points: 10}, {text: "Apenas uma marca por dia.", points: 0}] },
-        // ... Adicionei 5 exemplos reais acima. 
-        // Para chegar em 50, preencha as próximas com variações de argumentos de vendas:
-        { q: "O cliente reclama do preço do Exclusivo. Qual o melhor argumento?", options: [{text: "Falar sobre o ROI e redução de perdas por validade.", points: 10}, {text: "Dar desconto imediato de 50%.", points: 0}] },
-        { q: "O que é 'Share de Gôndola'?", options: [{text: "Espaço ocupado pela marca em relação à categoria.", points: 10}, {text: "O preço médio do produto.", points: 0}] },
-        { q: "Ponto extra é negociado geralmente com quem?", options: [{text: "Gerente da loja ou encarregado de setor.", points: 10}, {text: "Com o cliente final no corredor.", points: 0}] },
-        { q: "Qual a vantagem do compartilhado para o varejista?", options: [{text: "Menos pessoas diferentes circulando no estoque.", points: 10}, {text: "Nenhuma, ele prefere o exclusivo.", points: 0}] },
-        { q: "O serviço RT inclui relatórios de fotos?", options: [{text: "Sim, através da plataforma de execução.", points: 10}, {text: "Não, apenas reposição física.", points: 0}] }
+        // --- BLOCO 1: HISTÓRIA E POSICIONAMENTO RT ---
+        { q: "A RT Merchandising foca em quais pilares para garantir o sucesso do cliente?", options: [{text: "Pessoas, Processos e Tecnologia.", points: 10}, {text: "Preço baixo e entrega rápida apenas.", points: 0}] },
+        { q: "Qual o diferencial da RT em relação ao treinamento de promotores?", options: [{text: "Treinamento constante e foco em execução de excelência.", points: 10}, {text: "Contratação de pessoal sem experiência prévia.", points: 0}] },
+        { q: "A RT atua em quais canais de venda?", options: [{text: "Alimentar, Farma, Eletro, Home Center e outros.", points: 10}, {text: "Apenas em pequenos mercados de bairro.", points: 0}] },
+        { q: "Como a RT garante a cobertura nacional?", options: [{text: "Através de uma estrutura capilarizada em todo o Brasil.", points: 10}, {text: "Atendendo apenas as capitais do Sudeste.", points: 0}] },
+        { q: "O que a RT busca reduzir drasticamente no cliente?", options: [{text: "O índice de ruptura no PDV.", points: 10}, {text: "O número de produtos no estoque.", points: 0}] },
+        { q: "Qual o compromisso da RT com a tecnologia?", options: [{text: "Dados em tempo real para tomada de decisão.", points: 10}, {text: "Uso de planilhas de papel para segurança.", points: 0}] },
+        { q: "A RT é especialista em qual tipo de mão de obra?", options: [{text: "Trade Marketing e Terceirização de Serviços.", points: 10}, {text: "Transporte e Logística pesada.", points: 0}] },
+        { q: "Qual o impacto de uma parceria com a RT no Sell-out?", options: [{text: "Aumento das vendas através de melhor visibilidade.", points: 10}, {text: "Apenas organização, sem impacto em vendas.", points: 0}] },
+        { q: "A RT atende apenas grandes multinacionais?", options: [{text: "Não, atende empresas de todos os portes com soluções sob medida.", points: 10}, {text: "Sim, apenas marcas com faturamento bilionário.", points: 0}] },
+        { q: "O que define a cultura da RT?", options: [{text: "Foco no resultado do cliente e transparência.", points: 10}, {text: "Execução passiva sem relatórios.", points: 0}] },
+
+        // --- BLOCO 2: MODALIDADES (EXCLUSIVO E COMPARTILHADO) ---
+        { q: "No Merchandising Compartilhado, como é feita a divisão do custo?", options: [{text: "Rateado entre marcas que não competem entre si.", points: 10}, {text: "O primeiro que contratar paga tudo.", points: 0}] },
+        { q: "Qual a vantagem do Exclusivo para lançamentos de produtos?", options: [{text: "Atenção 100% focada na nova linha e positivação rápida.", points: 10}, {text: "Nenhuma, o compartilhado faz o mesmo efeito.", points: 0}] },
+        { q: "O Compartilhado RT é ideal para quais categorias?", options: [{text: "Categorias de menor giro ou marcas com mix reduzido.", points: 10}, {text: "Produtos que precisam de reposição de hora em hora.", points: 0}] },
+        { q: "Como o promotor exclusivo ajuda no controle de FIFO/PVPS?", options: [{text: "Garantindo que o produto mais antigo saia primeiro.", points: 10}, {text: "Colocando sempre o produto novo na frente.", points: 0}] },
+        { q: "No serviço compartilhado, a qualidade da foto é a mesma do exclusivo?", options: [{text: "Sim, o padrão de reporte via App é o mesmo.", points: 10}, {text: "Não, o compartilhado não tem fotos.", points: 0}] },
+        { q: "Um cliente com verba limitada deve escolher qual modalidade?", options: [{text: "Compartilhado, para otimizar o investimento.", points: 10}, {text: "Exclusivo, mesmo que estoure o orçamento.", points: 0}] },
+        { q: "O que é o 'Roteiro' no serviço compartilhado?", options: [{text: "A sequência lógica de lojas que o promotor visita no dia.", points: 10}, {text: "O script do que o vendedor deve falar.", points: 0}] },
+        { q: "Qual a frequência de visita no modelo Exclusivo?", options: [{text: "Geralmente diária ou conforme a necessidade da loja.", points: 10}, {text: "Uma vez por mês.", points: 0}] },
+        { q: "O promotor compartilhado pode montar ilhas/exibições?", options: [{text: "Sim, desde que esteja no escopo e tempo de loja.", points: 10}, {text: "Não, ele só pode mexer na prateleira.", points: 0}] },
+        { q: "Qual a principal 'dor' que o Exclusivo resolve?", options: [{text: "Falta de braço para gerir grandes volumes de mercadoria.", points: 10}, {text: "Alto custo de transporte.", points: 0}] },
+
+        // --- BLOCO 3: TERMOS TÉCNICOS E PDV ---
+        { q: "O que é o 'Ponto Extra'?", options: [{text: "Exposição fora do local primário (ex: ilha, ponta de gôndola).", points: 10}, {text: "Um novo caixa aberto no mercado.", points: 0}] },
+        { q: "O que significa 'Facing'?", options: [{text: "Número de frentes de um produto na prateleira.", points: 10}, {text: "A foto do rosto do promotor no check-in.", points: 0}] },
+        { q: "O que é o Cross-Merchandising?", options: [{text: "Colocar produtos de categorias diferentes que se complementam próximos.", points: 10}, {text: "Trocar os produtos de lugar com a concorrência.", points: 0}] },
+        { q: "Qual a função do 'Planograma'?", options: [{text: "Guia visual de como os produtos devem ser expostos.", points: 10}, {text: "O calendário de férias da equipe.", points: 0}] },
+        { q: "O que é 'Share de Mente' (Mindshare)?", options: [{text: "O quanto a marca é lembrada pelo consumidor.", points: 10}, {text: "O tamanho da gôndola.", points: 0}] },
+        { q: "O que é um produto 'Bebê' na gôndola?", options: [{text: "Produto que fica nas prateleiras inferiores.", points: 10}, {text: "Produto para recém-nascidos.", points: 0}] },
+        { q: "Qual a importância da 'Altura dos Olhos'?", options: [{text: "É a zona nobre que gera maior conversão de vendas.", points: 10}, {text: "É onde ficam os produtos mais baratos.", points: 0}] },
+        { q: "O que o promotor faz ao identificar um produto vencido?", options: [{text: "Retira da área de venda e reporta como avaria.", points: 10}, {text: "Esconde atrás dos produtos novos.", points: 0}] },
+        { q: "O que é o 'Shopper'?", options: [{text: "A pessoa que está no PDV realizando a compra.", points: 10}, {text: "O dono da indústria.", points: 0}] },
+        { q: "Qual a diferença entre Sell-in e Sell-out?", options: [{text: "Sell-in é venda para a loja, Sell-out é venda para o consumidor.", points: 10}, {text: "Não há diferença.", points: 0}] },
+
+        // --- BLOCO 4: DESAFIOS E ARGUMENTAÇÃO ---
+        { q: "Como convencer o gerente a dar um ponto extra?", options: [{text: "Provando que a exposição extra aumentará o giro da loja.", points: 10}, {text: "Pedindo por favor sem apresentar dados.", points: 0}] },
+        { q: "O cliente diz: 'O promotor externo atrapalha minha reposição interna'.", options: [{text: "Explicar que o promotor RT desafoga a equipe da loja.", points: 10}, {text: "Pedir desculpas e ir embora.", points: 0}] },
+        { q: "Por que a RT usa fotos de 'Antes e Depois'?", options: [{text: "Para comprovar a eficácia do trabalho realizado.", points: 10}, {text: "Para gastar memória do celular.", points: 0}] },
+        { q: "Qual o maior inimigo do Merchandising?", options: [{text: "A ruptura e a má exposição.", points: 10}, {text: "O excesso de luz na loja.", points: 0}] },
+        { q: "O que é 'Preçoficação Correcta'?", options: [{text: "Garantir que o preço na etiqueta seja o mesmo do sistema.", points: 10}, {text: "Colocar o preço mais caro possível.", points: 0}] },
+        { q: "Como a RT lida com a rotatividade (Turnover)?", options: [{text: "Com processos de RH ágeis e treinamento de reserva.", points: 10}, {text: "Deixando o PDV sem atendimento.", points: 0}] },
+        { q: "O que é uma 'Loja Perfeita' para a RT?", options: [{text: "Aquela que segue 100% dos KPIs de execução acordados.", points: 10}, {text: "Uma loja que é muito bonita visualmente apenas.", points: 0}] },
+        { q: "Qual a importância do feedback do promotor para a indústria?", options: [{text: "Trazer informações em tempo real sobre a concorrência.", points: 10}, {text: "Apenas confirmar que ele trabalhou.", points: 0}] },
+        { q: "O que é o 'Hot Point' (Ponto Quente) da loja?", options: [{text: "Locais de maior circulação, como a entrada e o checkout.", points: 10}, {text: "O setor de congelados.", points: 0}] },
+        { q: "Por que contratar a RT em vez de equipe própria?", options: [{text: "Expertise técnica, gestão de pessoas e zero passivo trabalhista direto.", points: 10}, {text: "Porque o uniforme da RT é mais bonito.", points: 0}] }
+    ];
         // DICA: Para completar 50, basta replicar o padrão {q: "", options: [...] }
     ];
 
@@ -220,3 +256,4 @@
 </script>
 </body>
 </html>
+
