@@ -36,7 +36,7 @@
             text-align: center;
         }
 
-        h1 { color: var(--gold); text-transform: uppercase; text-shadow: 2px 2px var(--accent); font-size: 1.8em; }
+        h1 { color: var(--gold); text-transform: uppercase; text-shadow: 2px 2px var(--accent); font-size: 1.8em; margin-top: 0; }
         
         .hidden { display: none !important; }
 
@@ -50,6 +50,7 @@
             font-family: 'Courier New';
             font-size: 1.1em;
             text-align: center;
+            outline: none;
         }
 
         button {
@@ -63,8 +64,10 @@
             box-shadow: 4px 4px 0px var(--gold);
             margin: 10px 0;
             font-family: 'Courier New';
+            font-size: 1em;
         }
 
+        button:hover { background: #ff4d6d; }
         button:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--gold); }
 
         .option-btn {
@@ -86,7 +89,7 @@
         }
 
         table { width: 100%; margin-top: 20px; border-collapse: collapse; }
-        th, td { padding: 8px; border-bottom: 1px solid #333; font-size: 0.8em; }
+        th, td { padding: 8px; border-bottom: 1px solid #333; font-size: 0.8em; text-align: center; }
         th { color: var(--gold); }
         .arcade-font { color: var(--gold); }
     </style>
@@ -98,9 +101,9 @@
         <h1>RT ARCADE</h1>
         <p style="color: var(--gold);">TREINAMENTO DE VENDAS</p>
         <p>IDENTIFIQUE-SE, VENDEDOR:</p>
-        <input type="text" id="player-name" placeholder="SEU NOME" maxlength="15">
+        <input type="text" id="player-name" placeholder="DIGITE SEU NOME" maxlength="15">
         <br>
-        <button id="btn-start">PRESS START</button>
+        <button onclick="validaEInicia()">PRESS START</button>
     </div>
 
     <div id="quiz-screen" class="hidden">
@@ -130,7 +133,7 @@
 </div>
 
 <script>
-    // AS 50 PERGUNTAS
+    // LISTA DE PERGUNTAS (Resumida para o código rodar limpo)
     const allQuestions = [
         { q: "A RT Merchandising foca em quais pilares para garantir o sucesso do cliente?", options: [{text: "Pessoas, Processos e Tecnologia.", points: 10}, {text: "Preço baixo e entrega rápida apenas.", points: 0}] },
         { q: "Qual o diferencial da RT em relação ao treinamento de promotores?", options: [{text: "Treinamento constante e foco em execução de excelência.", points: 10}, {text: "Contratação de pessoal sem experiência prévia.", points: 0}] },
@@ -166,22 +169,22 @@
         { q: "Gerente diz que promotor externo atrapalha.", options: [{text: "Mostrar que a RT desafoga a equipe interna.", points: 10}, {text: "Ir embora.", points: 0}] },
         { q: "Por que usar fotos de 'Antes e Depois'?", options: [{text: "Comprovar qualidade e execução.", points: 10}, {text: "Controle de bateria.", points: 0}] },
         { q: "Maior inimigo do Merchandising?", options: [{text: "Ruptura e má exposição.", points: 10}, {text: "Preço baixo.", points: 0}] },
-        { q: "O que é 'Precificação Correta'?", options: [{text: "Etiqueta igual ao preço do sistema.", points: 10}, {text: "Preço mais caro da loja.", points: 0}] },
+        { q: "O que é 'Precificação Correta'?", options: [{text: "Etiqueta igual ao preço do sistema.", points: 10}, {text: "Preço sugerido concorrente.", points: 0}] },
         { q: "Como a RT lida com Turnover?", options: [{text: "RH ágil e banco de talentos.", points: 10}, {text: "Não repõe vagas.", points: 0}] },
-        { q: "O que é 'Loja Perfeita'?", options: [{text: "Atendimento de 100% dos KPIs acordados.", points: 10}, {text: "Loja com ar condicionado forte.", points: 0}] },
+        { q: "O que é 'Loja Perfeita'?", options: [{text: "Atendimento de 100% dos KPIs acordados.", points: 10}, {text: "Loja com ar condicionado.", points: 0}] },
         { q: "Importância do feedback do promotor?", options: [{text: "Dados reais de concorrência e estoque.", points: 10}, {text: "Apenas burocracia.", points: 0}] },
         { q: "O que é o 'Hot Point'?", options: [{text: "Locais de maior circulação.", points: 10}, {text: "Estoque da loja.", points: 0}] },
-        { q: "Por que contratar a RT e não equipe própria?", options: [{text: "Expertise e zero passivo trabalhista direto.", points: 10}, {text: "Uniforme mais bonito.", points: 0}] },
+        { q: "Por que contratar a RT e não equipe própria?", options: [{text: "Expertise e zero passivo trabalhista.", points: 10}, {text: "Uniforme bonito.", points: 0}] },
         { q: "Papel do Supervisor RT?", options: [{text: "Garantir execução e suporte ao time.", points: 10}, {text: "Ficar só no escritório.", points: 0}] },
         { q: "Apoio na sazonalidade (ex: Páscoa)?", options: [{text: "Reforço de equipe e montagem ágil.", points: 10}, {text: "Manter rotina normal.", points: 0}] },
         { q: "O que é o 'Check-out'?", options: [{text: "Área de caixas, para compra por impulso.", points: 10}, {text: "Saída da loja.", points: 0}] },
         { q: "O que é 'Gôndola'?", options: [{text: "Estante principal de exposição.", points: 10}, {text: "Carrinho de compras.", points: 0}] },
-        { q: "Gestão de MPV?", options: [{text: "Material de Ponto de Venda (stoppers, faixas).", points: 10}, {text: "Manutenção de empilhadeiras.", points: 0}] },
+        { q: "Gestão de MPV?", options: [{text: "Material de Ponto de Venda (stoppers, faixas).", points: 10}, {text: "Limpeza de caixas.", points: 0}] },
         { q: "Frente de Caixa é local para?", options: [{text: "Itens de compra rápida (doces, pilhas).", points: 10}, {text: "Produtos de limpeza.", points: 0}] },
         { q: "Reportar preços da concorrência?", options: [{text: "Sim, gera inteligência de mercado.", points: 10}, {text: "Não, é proibido.", points: 0}] },
-        { q: "O que é uma 'Ilha'?", options: [{text: "Exposição central acessível por 4 lados.", points: 10}, {text: "Produto sozinho no fundo.", points: 0}] },
-        { q: "O que é 'Estoque Virtual'?", options: [{text: "Erro sistêmico onde consta produto sem ter na prateleira.", points: 10}, {text: "Venda por aplicativo.", points: 0}] },
-        { q: "Objetivo final da RT?", options: [{text: "Produto disponível e atraente para o shopper.", points: 10}, {text: "Apenas limpar prateleiras.", points: 0}] }
+        { q: "O que é uma 'Ilha'?", options: [{text: "Exposição central acessível por 4 lados.", points: 10}, {text: "Produto no fundo.", points: 0}] },
+        { q: "O que é 'Estoque Virtual'?", options: [{text: "Erro sistêmico: consta produto sem ter na prateleira.", points: 10}, {text: "Venda por App.", points: 0}] },
+        { q: "Objetivo final da RT?", options: [{text: "Produto disponível e atraente para o shopper.", points: 10}, {text: "Limpar prateleiras.", points: 0}] }
     ];
 
     let playerName = "";
@@ -189,16 +192,15 @@
     let currentStep = 0;
     let selectedQuestions = [];
 
-    // Função de Início
-    function init() {
-        document.getElementById('btn-start').addEventListener('click', function() {
-            playerName = document.getElementById('player-name').value;
-            if (playerName.trim().length < 2) {
-                alert("POR FAVOR, INSIRA SEU NOME!");
-                return;
-            }
-            startGame();
-        });
+    // Função que o botão chama diretamente
+    function validaEInicia() {
+        var input = document.getElementById('player-name');
+        if (!input || input.value.trim().length < 2) {
+            alert("POR FAVOR, INSIRA SEU NOME!");
+            return;
+        }
+        playerName = input.value.trim().toUpperCase();
+        startGame();
     }
 
     function startGame() {
@@ -228,7 +230,7 @@
             const btn = document.createElement('button');
             btn.className = 'option-btn';
             btn.innerText = opt.text;
-            btn.onclick = () => {
+            btn.onclick = function() {
                 score += opt.points;
                 currentStep++;
                 if (currentStep < 5) {
@@ -248,12 +250,12 @@
         const date = new Date().toLocaleDateString('pt-BR');
         let ranking = [];
         try {
-            ranking = JSON.parse(localStorage.getItem('rtRankingV3')) || [];
+            ranking = JSON.parse(localStorage.getItem('rtRankingGlobal')) || [];
         } catch(e) { ranking = []; }
 
-        ranking.push({ name: playerName.toUpperCase(), date: date, score: score });
+        ranking.push({ name: playerName, date: date, score: score });
         ranking.sort((a, b) => b.score - a.score);
-        localStorage.setItem('rtRankingV3', JSON.stringify(ranking));
+        localStorage.setItem('rtRankingGlobal', JSON.stringify(ranking));
 
         const tbody = document.getElementById('ranking-body');
         tbody.innerHTML = "";
@@ -261,6 +263,6 @@
             tbody.innerHTML += `<tr><td>${entry.name}</td><td>${entry.date}</td><td class="arcade-font">${entry.score}</td></tr>`;
         });
     }
-
-    // Garante que o script roda após carregar a página
-    window.onload = init;
+</script>
+</body>
+</html>
